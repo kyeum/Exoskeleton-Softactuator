@@ -11,7 +11,7 @@ eq=vector(0,-9,0)
 t=0
 dt=0.01
 g = vector(0,-9.8,0)
-f1 = graph(width=400,height=400,title='A First graph')
+f1 = graph(width=400,height=400,title='A First graph',xtitle='time',ytitle='Energy')
 f1 = gcurve(color=color.cyan)
 
 
