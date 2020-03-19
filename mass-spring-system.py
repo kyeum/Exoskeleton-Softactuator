@@ -2,31 +2,35 @@ from vpython import *
 
 #display(width=600,height=600,center=vector(6,0,0),background=color.white)
 
-wall=box(pos=vector(0,0,0),size=vector(3,0.2,3),color=color.green)
+wall=box(pos=vector(0,0,0),size=vector(10,2,10),color=color.green)
 #floor=box(pos=vector(6,-0.6,0),size=vector(14,0.2,4),color=color.green)
-Mass=box(pos=vector(0,-9,0),velocity=vector(0,0,0),size=vector(1,1,1),mass=1.0,color=color.blue)
+Mass=box(pos=vector(0,-9,0),velocity=vector(0,0,0),size=vector(1,1,1),mass=0.5,color=color.blue)
 pivot=vector(0,0,0)
-spring=helix(pos=pivot,axis=Mass.pos-pivot,radius=0.4,constant=1,thickness=0.1,coils=20,color=color.red)
+#spring constant
+G = 8000
+d = 0.08
+D = 0.8
+n = 12
+k = G*pow(d,4)/(8*pow(D,3)*n)
+
+spring=helix(pos=pivot,axis=Mass.pos-pivot,radius=0.4,constant=k,thickness=0.04,coils=12,color=color.red)
 eq=vector(0,-9,0)
 t=0
 dt=0.01
 g = vector(0,-9.8,0)
-f1 = graph(width=400,height=400,title='A First graph',xtitle='time',ytitle='Energy')
+f1 = graph(width=400,height=400,title='A First graph',xtitle='time',ytitle='Force',foreground=color.black, background=color.white)
 f1 = gcurve(color=color.cyan)
-
-
-#graph
-#graph1=gdisplay(x=550,y=0,width=400,height=400,title='Energy Vs. Time', xtitle='time',ytitle='Energy',foreground=color.black, background=color.white)
-#fke=gcurve(gdisplay=graph1,color=color.red)
+f2 = gcurve(color=color.red)
+temp = 0
 
 while (t<50):
   rate(100)
-  spring.constant = spring.constant
   acc=(eq-Mass.pos)*(spring.constant/Mass.mass)+g
   Mass.velocity=Mass.velocity+acc*dt
   Mass.pos=Mass.pos+Mass.velocity*dt
   spring.axis=Mass.pos-spring.pos
-  f1.plot(t,acc.y)
+  f1.plot(t,spring.constant)  
+  f2.plot(t,acc.z)
   t=t+dt
   
 '''
